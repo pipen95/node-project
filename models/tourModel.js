@@ -49,7 +49,7 @@ const tourSchema = new mongoose.Schema(
     priceDiscount: {
       type: Number,
       validate: {
-        validator: function(val) {
+        validator: function (val) {
           // this only points to current doc on NEW document creation
           return val < this.price;
         },
@@ -87,7 +87,10 @@ const tourSchema = new mongoose.Schema(
         default: 'Point',
         enum: ['Point']
       },
-      coordinates: [Number],
+      coordinates: {
+        type: [Number],
+        default: [0, 0]
+      },
       address: String,
       description: String
     },
@@ -122,7 +125,8 @@ tourSchema.index({ price: 1, ratingsAverage: -1 });
 tourSchema.index({ slug: 1 });
 tourSchema.index({ startLocation: '2dsphere' });
 
-tourSchema.virtual('durationWeeks').get(function() {
+
+tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
 
@@ -134,7 +138,7 @@ tourSchema.virtual('reviews', {
 });
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
-tourSchema.pre('save', function(next) {
+tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
@@ -156,19 +160,18 @@ tourSchema.pre('save', function(next) {
 // });
 
 // QUERY MIDDLEWARE
-// tourSchema.pre('find', function(next) {
-tourSchema.pre(/^find/, function(next) {
+tourSchema.pre(/^find/, function (next) {
   this.find({ secretTour: { $ne: true } });
 
   this.start = Date.now();
   next();
 });
-tourSchema.post(/^find/, function(docs, next) {
+tourSchema.post(/^find/, function (docs, next) {
   console.log(`Query took ${Date.now() - this.start} milliseconds!`);
   next();
 });
 
-tourSchema.pre(/^find/, function(next) {
+tourSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'guides',
     select: '-__v -passwordChangedAt'
@@ -178,12 +181,13 @@ tourSchema.pre(/^find/, function(next) {
 });
 
 // AGGREGATION MIDDLEWARE
-// tourSchema.pre('aggregate', function(next) {
-//   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
-
-//   console.log(this.pipeline());
-//   next();
-// });
+tourSchema.pre('aggregate', function (next) {
+  const things = this.pipeline()[0];
+  if (Object.keys(things)[0] !== '$geoNear') {
+    this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+  }
+  next();
+});
 
 const Tour = mongoose.model('Tour', tourSchema);
 
