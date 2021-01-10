@@ -1,0 +1,20 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Hash</title>
+</head>
+<body>
+  <h1>Test</h1>
+  <script>
+  
+  var baseUrl = (window.location).href; // You can also use document.URL
+  var koopId = baseUrl.substring(baseUrl.lastIndexOf('#') + 1);
+  alert(koopId)//montmorency
+  $("#"+ koopId).attr("selected","selected");
+  </script>
+</body>
+</html>
