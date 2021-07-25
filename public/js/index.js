@@ -4,7 +4,11 @@ import { login, logout } from './login';
 
 //DOM elements
 const mapBox = document.getElementById('map');
+<<<<<<< HEAD
 const loginForm = document.querySelector('.form');
+=======
+const loginForm = document.querySelector('.form--login');
+>>>>>>> 0ae5e7993bed68faee5b9c7f6f2f7541a500f749
 const logOutbtn = document.querySelector('.nav__el--logout');
 
 //DELEGATION
