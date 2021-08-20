@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { showAlert } from './alert';
+import {
+  showAlert
+} from './alert';
 
 export const login = async (email, password) => {
   try {
@@ -11,6 +13,7 @@ export const login = async (email, password) => {
         password
       }
     });
+    console.log(res);
 
     if (res.data.status === 'success') {
       showAlert('success', 'Logged in successfully!');
@@ -18,10 +21,10 @@ export const login = async (email, password) => {
         location.assign('/');
       }, 1500);
     }
-  }
-  catch (err) {
+  } catch (err) {
+    console.log(err.response.data);
     showAlert('error', err.response.data.message);
-    console.log(err);
+
   }
 };
 export const logout = async () => {
@@ -31,11 +34,9 @@ export const logout = async () => {
       url: 'http://localhost:3000/api/v1/users/logout'
     });
 
-    if (res.data.status === 'success') location.reload(true);
-  }
-  catch (err) {
+    if (res.data.status === 'success') location.assign('/');
+  } catch (err) {
     showAlert('error', 'Error logging out! Try Again');
     console.log(err);
   }
 };
-

@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "description": "Learning node, express and mongoDB",
   "main": "app.js",
+  "targets": {
+    "main": false
+  },
   "scripts": {
     "start": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js",
     "debug": "ndb server.js",
-    "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/js --public-url /js --out-file bundle.js",
-    "build:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js"
+    "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js --public-url /js",
+    "build:js": "parcel build ./public/js/index.js --out-dir ./public/js --out-file bundle.js --public-url /js"
   },
   "author": "Jonas Schmedtmann",
   "license": "ISC",
@@ -17,7 +20,11 @@
     "alert": "^5.0.10",
     "all": "0.0.0",
     "axios": "^0.21.1",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.2.2",
+    "babel-preset-es2015": "^6.24.1",
     "bcryptjs": "^2.4.3",
+    "chalk": "^4.1.2",
     "cookie-parser": "^1.4.5",
     "dijkstrajs": "^1.0.1",
     "dotenv": "^8.2.0",
@@ -32,16 +39,20 @@
     "mapbox": "^1.0.0-beta10",
     "mongoose": "^5.12.3",
     "morgan": "^1.10.0",
-    "node": "^15.12.0",
+    "node": "^15.14.0",
     "nodemailer": "^6.5.0",
     "nodemon": "^2.0.7",
-    "parcel-bundler": "^1.12.5",
+    "nvm": "^0.0.4",
     "pug": "^3.0.2",
+    "python": "0.0.4",
     "slugify": "^1.5.0",
     "validator": "^13.5.2",
     "xss-clean": "^0.1.1"
   },
   "engines": {
     "node": ">=10.0.0"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5"
   }
 }
