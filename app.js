@@ -13,6 +13,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const bookingsRouter = require('./routes/reviewRoutes');
 const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
@@ -21,7 +22,6 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // 1) GLOBAL MIDDLEWARES
-
 
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -55,15 +55,22 @@ if (process.env.NODE_ENV === 'development') {
 const limiter = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000,
-  message: 'Too many requests from this IP, please try again in an hour!'
+  message: 'Too many requests from this IP, please try again in an hour!',
 });
 app.use('/api', limiter);
 
 // Body parser, reading data from body into req.body
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({
-  extended:true, limit:'10kb'
-}))
+app.use(
+  express.json({
+    limit: '10kb',
+  })
+);
+app.use(
+  express.urlencoded({
+    extended: true,
+    limit: '10kb',
+  })
+);
 app.use(cookieParser());
 
 // Data sanitization against NoSQL query injection
@@ -81,15 +88,15 @@ app.use(
       'ratingsAverage',
       'maxGroupSize',
       'difficulty',
-      'price'
-    ]
+      'price',
+    ],
   })
 );
 
 // Test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(req.cookies);
+  // console.log(req.cookies);
   next();
 });
 
